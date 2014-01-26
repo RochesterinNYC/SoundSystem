@@ -1,7 +1,7 @@
 class PlaylistsController < ApplicationController
   
   def index
-    "test"
+    @playlists = current_user.get_playlists
   end
 
 end

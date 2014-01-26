@@ -6,6 +6,7 @@
     = csrf_meta_tags
     = favicon_link_tag
   %body
+    = render 'layouts/header'
     = gflash
-    .frame.text-center  
+    .frame.text-center
       = yield

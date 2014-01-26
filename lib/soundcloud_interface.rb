@@ -4,6 +4,10 @@ module SoundcloudInterface
 
   @@user_client = nil
 
+  def self.client_configured
+    !@@user_client.blank?
+  end
+
   def self.set_client access_token
     @@user_client = Soundcloud.new(access_token: access_token)
   end
@@ -18,6 +22,10 @@ module SoundcloudInterface
 
   def self.get_user
     @@user_client.get('/me')
+  end
+
+  def self.get_playlists
+    @@user_client.get('/me/playlists')
   end
 
 end

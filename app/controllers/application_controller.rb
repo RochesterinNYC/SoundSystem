@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
 
   def require_user
     if current_user
+      if !current_user.client_configured
+        current_user.initialize_client
+      end
       return true
     end
     #gflash :error => "Please login with Soundcloud."
