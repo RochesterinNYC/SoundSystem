@@ -17,10 +17,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: SoundSystem_development
+  database: SoundSystem
   pool: 5
-  username: SoundSystem
-  password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -48,13 +46,9 @@ test:
   encoding: unicode
   database: SoundSystem_test
   pool: 5
-  username: SoundSystem
-  password:
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: SoundSystem_production
+  database: SoundSystem
   pool: 5
-  username: SoundSystem
-  password:
