@@ -1,8 +1,8 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
-      t.integer :soundcloud_id
-      t.string :access_token
+      t.integer :soundcloud_id, null: false
+      t.string :access_token, null: false
       t.string :username
       t.string :permalink
       t.string :avatar

@@ -3,6 +3,7 @@ require 'soundcloud_interface'
 class User < ActiveRecord::Base
 
   validates :soundcloud_id, presence: true, uniqueness: true
+  validates :access_token, presence: true, uniqueness: true
 
   def self.find_or_create_by_token access_token
     ::SoundcloudInterface.set_client access_token

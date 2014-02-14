@@ -1,2 +1,3 @@
-- playlist.tracks.each do |track|
-  = render 'playlists/track', track: track
+.playlist{id: "playlist_id_#{playlist.id}"}
+  - playlist.tracks.each do |track|
+    = render 'playlists/track', track: track

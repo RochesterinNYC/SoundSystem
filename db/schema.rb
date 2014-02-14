@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20140126054806) do
   enable_extension "plpgsql"
 
   create_table "users", force: true do |t|
-    t.integer  "soundcloud_id"
-    t.string   "access_token"
+    t.integer  "soundcloud_id",    null: false
+    t.string   "access_token",     null: false
     t.string   "username"
     t.string   "permalink"
     t.string   "avatar"
