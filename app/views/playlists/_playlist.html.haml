@@ -1,3 +1,11 @@
 .playlist{id: "playlist_id_#{playlist.id}"}
-  - playlist.tracks.each do |track|
-    = render 'playlists/track', track: track
+  %h4
+    = playlist.title
+  %h4
+    = playlist.duration
+  %h4
+    = playlist.track_count
+  %h4
+    = playlist.description if !playlist.description.blank?
+  %h4
+    = link_to "Shuffle!", shuffle_path(playlist.id)

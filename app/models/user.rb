@@ -44,4 +44,8 @@ class User < ActiveRecord::Base
     ::SoundcloudInterface.client_configured
   end
 
+  def get_shuffle playlist_id
+    ::SoundcloudInterface.get_playlist_shuffle playlist_id
+  end
+
 end

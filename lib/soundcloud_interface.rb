@@ -28,4 +28,19 @@ module SoundcloudInterface
     @@user_client.get('/me/playlists')
   end
 
+  def self.get_playlist_songs playlist_id
+    @@user_client.get("/playlists/#{playlist_id}")
+  end
+
+  def self.get_playlist_shuffle playlist_id
+    @songs = get_playlist_songs(playlist_id).tracks
+    length = @songs.length
+    random = Random.new
+    @songs.each_with_index do |song, index| 
+      rand_index = random.rand(0..length - 1)
+      @songs[index], @songs[rand_index] = @songs[rand_index], @songs[index]
+    end
+    @songs
+  end
+
 end

@@ -5,5 +5,6 @@ SoundSystem::Application.routes.draw do
   get '/auth/callback', :to => 'sessions#create'
 
   get '/dashboard', :to => 'playlists#index', as: :dashboard
-  root to: 'sessions#new'
+  get '/shuffle/:id', :to => 'playlists#shuffle', as: :shuffle
+  root to: 'playlists#index'
 end
