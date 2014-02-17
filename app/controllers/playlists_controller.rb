@@ -5,7 +5,7 @@ class PlaylistsController < ApplicationController
   end
 
   def shuffle 
-    @songs = current_user.get_shuffle params[:id]
+    @shuffle_id = current_user.create_shuffle params[:id], current_user
   end
 
 end
