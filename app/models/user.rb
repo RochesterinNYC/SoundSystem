@@ -28,7 +28,6 @@ class User < ActiveRecord::Base
       followings_count: user_info.followings_count
     }
     user.save
-    #end
     user
   end
 

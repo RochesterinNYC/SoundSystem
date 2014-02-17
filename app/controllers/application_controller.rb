@@ -20,4 +20,25 @@ class ApplicationController < ActionController::Base
     redirect_to login_path
   end
 
+  def duration_string num_milliseconds
+    
+    hours = num_milliseconds / 3600000
+    num_milliseconds = num_milliseconds % 3600000
+
+    minutes = num_milliseconds / 60000
+    num_milliseconds = num_milliseconds % 60000
+
+    seconds = num_milliseconds / 1000
+
+    duration = ""
+    duration = duration + "#{hours} hours" if hours > 0
+    duration = duration + ", " unless minutes == 0 || hours == 0
+    duration = duration + "#{minutes} minutes" if minutes > 0
+    duration = duration + ", " unless seconds == 0
+    duration = duration + "#{seconds} seconds" if seconds > 0
+
+    duration
+  end
+  helper_method :duration_string
+
 end
