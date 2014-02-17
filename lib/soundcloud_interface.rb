@@ -33,43 +33,65 @@ module SoundcloudInterface
   end
 
   #If shuffle playlist does not exist, return nil
-  def self.get_shuffle_playlist_id user
+  def self.get_shuffle_playlist_id user, playlists
     @playlists = Hash.new
-    @@user_client.get('/me/playlists').each do |playlist|
+    playlists.each do |playlist|
       @playlists[playlist.title] = playlist.id;
     end
     shuffle_playlist_id = @playlists["#{user.full_name}'s Shuffle"]
     shuffle_playlist_id
   end
-  
+
+  #Generic method for getting a certain playlist attribute
+  #Playlist is matched by a specified identifier that will match identifier_match
+  #Example, can return the playlist uri of a playlist named "James Wen's Shuffle"
+  def self.get_attribute_from_playlist playlists, identifier_name, identifier_match, attribute_name
+    playlist_attribute = nil
+    playlists.each do |playlist|
+      if playlist[identifier_name] == identifier_match
+        playlist_attribute = playlist[attribute_name]
+      end
+    end
+    return playlist_attribute
+  end
+
   def self.create_playlist_shuffle playlist_id, user
-    @songs = get_playlist_shuffle(playlist_id).collect{|song| song.id}
+    # get all playlists for user
+    @playlists = get_playlists
+    # find songs from specific playlist that user wants to shuffle
+    @playlist_songs = get_attribute_from_playlist(@playlists, "id", playlist_id.to_i, "tracks")
+    @playlist_song_ids = @playlist_songs.collect{|song| song.id}
+    # randomize playlist
+    @songs = get_playlist_shuffle(playlist_id, @playlist_song_ids)
+    
     @songs = @songs.map { |id| {:id => id} }
-    shuffle_playlist_id = get_shuffle_playlist_id user
-    if shuffle_playlist_id.nil?
-      playlist = @@user_client.post('/playlists', :playlist => {
+
+    shuffle_id = get_attribute_from_playlist(@playlists, "title", "#{user.full_name}'s Shuffle", "id")
+    # either create new shuffle playlist or update existing one
+    if shuffle_id.nil?
+      shuffle_id = @@user_client.post('/playlists', :playlist => {
         :title => "#{user.full_name}'s Shuffle",
         :sharing => 'public',
         :tracks => @songs
       })
     else
-      playlist = @@user_client.get("/playlists/#{shuffle_playlist_id}")
-      @@user_client.put(playlist.uri, :playlist => {
+      # find shuffle playlist uri
+      uri = get_attribute_from_playlist(@playlists, "id", shuffle_id, "uri")
+      @@user_client.put(uri, :playlist => {
         :tracks => @songs
       })
     end
-    playlist.id
+    shuffle_id
   end
 
-  def self.get_playlist_shuffle playlist_id
-    @songs = get_playlist_songs(playlist_id).tracks
-    length = @songs.length
+  def self.get_playlist_shuffle playlist_id, track_ids
+    length = track_ids.length
     random = Random.new
-    @songs.each_with_index do |song, index| 
+    track_ids.each_with_index do |song, index| 
       rand_index = random.rand(0..length - 1)
-      @songs[index], @songs[rand_index] = @songs[rand_index], @songs[index]
+      track_ids[index], track_ids[rand_index] = track_ids[rand_index], track_ids[index]
     end
-    @songs
+    track_ids
   end
 
 end
