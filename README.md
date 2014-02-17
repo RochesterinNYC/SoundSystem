@@ -11,6 +11,5 @@ User Flow:
 
 - Pick playlist that you want to play in shuffle
 - Rails --> get array of song ids from playlist data and use Fisher-Yates shuffle alg to randomize it
-- Pass that randomized list of song ids to the javascript front-end
-- Javascript streamer that streams through song ids and acts as stack (remove from end)
-- Page refreshes and new randomized list plays when old list has been played through (stack empty)
+- Use that randomized list of song ids to create or alter new or existing shuffle playlist
+- Stream the shuffle playlist
