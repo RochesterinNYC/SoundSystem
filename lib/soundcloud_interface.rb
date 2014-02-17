@@ -63,9 +63,11 @@ module SoundcloudInterface
     @playlist_song_ids = @playlist_songs.collect{|song| song.id}
     # randomize playlist
     @songs = get_playlist_shuffle(playlist_id, @playlist_song_ids)
-    
-    @songs = @songs.map { |id| {:id => id} }
+    @songs = @songs.map { |id| {id: id} }
 
+    #Cut down on amount of data we're working with
+    @playlists = @playlists.map{ |playlist| {"id" => playlist.id, "title" => playlist.title, "uri" => playlist.uri} }
+    #Get playlist id of shuffle playlist or nil if it doesn't exist
     shuffle_id = get_attribute_from_playlist(@playlists, "title", "#{user.full_name}'s Shuffle", "id")
     # either create new shuffle playlist or update existing one
     if shuffle_id.nil?
