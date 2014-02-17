@@ -1,4 +1,4 @@
-SoundSystem
+<a href="http://sound-system.herokuapp.com" target="_blank">SoundSystem</a>
 ---
 
 This web app represents a suite of tools/functionalities that I wish SoundCloud had.
@@ -18,4 +18,9 @@ Shuffle Flow:
 
 The SoundCloud querying is rather slow. Have to either find a way to speed up the querying or change how the shuffle mechanism is implemented.
 
-Also have to add a lot of other features after this week.
+Also have to add a lot of other features after my summer plans are settled. So many things I want to play around with!
+
+- How well do you know your SoundCloud favorites/likes? (Quiz)
+- SoundCloud Queue Player
+- Playlist Manager (Easy GUI for moving tracks)
+- SoundCloud Stats Analyzer (Need to find way to access personal stats)
