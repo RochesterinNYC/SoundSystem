@@ -58,29 +58,37 @@ module SoundcloudInterface
   def self.create_playlist_shuffle playlist_id, user
     # get all playlists for user
     @playlists = get_playlists
+
     # find songs from specific playlist that user wants to shuffle
+    playlist_title = get_attribute_from_playlist(@playlists, "id", playlist_id.to_i, "title")
     @playlist_songs = get_attribute_from_playlist(@playlists, "id", playlist_id.to_i, "tracks")
     @playlist_song_ids = @playlist_songs.collect{|song| song.id}
+
     # randomize playlist
     @songs = get_playlist_shuffle(playlist_id, @playlist_song_ids)
     @songs = @songs.map { |id| {id: id} }
 
     #Cut down on amount of data we're working with
     @playlists = @playlists.map{ |playlist| {"id" => playlist.id, "title" => playlist.title, "uri" => playlist.uri} }
+
     #Get playlist id of shuffle playlist or nil if it doesn't exist
     shuffle_id = get_attribute_from_playlist(@playlists, "title", "#{user.full_name}'s Shuffle", "id")
+
     # either create new shuffle playlist or update existing one
     if shuffle_id.nil?
-      shuffle_id = @@user_client.post('/playlists', :playlist => {
+      playlist = @@user_client.post('/playlists', :playlist => {
         :title => "#{user.full_name}'s Shuffle",
         :sharing => 'public',
-        :tracks => @songs
+        :tracks => @songs,
+        :description => "Shuffle for playlist: #{playlist_title}" 
       })
+      shuffle_id = playlist.id
     else
       # find shuffle playlist uri
       uri = get_attribute_from_playlist(@playlists, "id", shuffle_id, "uri")
       @@user_client.put(uri, :playlist => {
-        :tracks => @songs
+        :tracks => @songs,
+        :description => "Shuffle for playlist: #{playlist_title}"
       })
     end
     shuffle_id
